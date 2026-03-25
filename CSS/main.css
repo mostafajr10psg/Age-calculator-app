@@ -1,0 +1,245 @@
+html {
+  font-size: 62.5%;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --purple: hsl(259, 100%, 65%);
+  --red: hsl(0, 100%, 67%);
+  --grey-100: hsl(0, 0%, 94%);
+  --grey-200: hsl(0, 0%, 86%);
+  --grey-500: hsl(0, 1%, 44%);
+  --font-poppins: "Poppins", sans-serif;
+}
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+:where(button, a, input, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.p-relative {
+  position: relative !important;
+}
+
+.color-red {
+  color: var(--red) !important;
+}
+
+.border-red {
+  border-color: var(--red) !important;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-poppins);
+  font-size: 1.6rem;
+  background-color: var(--grey-100);
+}
+
+main {
+  flex: 1;
+  max-width: 63rem;
+  padding: 5rem 4rem;
+  margin: 0 2rem;
+  background-color: white;
+  border-radius: 15px;
+  border-bottom-right-radius: 150px;
+}
+
+@media (max-width: 400px) {
+  main {
+    padding: 5rem 2.5rem;
+    border-bottom-right-radius: 100px;
+  }
+}
+
+.calc-user-age::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  width: 100%;
+  height: 1px;
+  background-color: var(--grey-100);
+}
+
+.calc-user-age .user-birthdate {
+  display: flex;
+  gap: 2.5rem;
+}
+
+@media (max-width: 400px) {
+  .calc-user-age .user-birthdate {
+    gap: 1.5rem;
+  }
+}
+
+.user-birthdate > div {
+  max-width: 12.5rem;
+}
+
+.user-birthdate > div label {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--grey-500);
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: 0.3s color;
+}
+
+@media (max-width: 450px) {
+  .user-birthdate > div label {
+    font-size: 1.1rem;
+  }
+}
+
+.user-birthdate > div input {
+  width: 100%;
+  height: 5.3rem;
+  padding: 1.8rem 1.4rem;
+  border: 1px solid var(--grey-200);
+  border-radius: 6px;
+  outline: none;
+  font-family: var(--font-poppins);
+  font-size: 2rem;
+  font-weight: 700;
+  transition: 0.3s border;
+}
+
+@media (max-width: 400px) {
+  .user-birthdate > div input {
+    padding: 1.5rem 1.1rem;
+    font-size: 1.9rem;
+  }
+}
+
+.user-birthdate > div input::placeholder {
+  font-size: 2.2rem;
+  color: var(--grey-500);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+@media (max-width: 400px) {
+  .user-birthdate > div input::placeholder {
+    font-size: 1.8rem;
+  }
+}
+
+.user-birthdate > div input:hover,
+.user-birthdate > div input:focus {
+  border-color: var(--purple);
+}
+
+.user-birthdate > div .error-msg {
+  margin-top: 7px;
+  color: var(--red);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+.calc-user-age > button {
+  width: 6.5rem;
+  height: 6.5rem;
+  margin: 1rem 0 0 auto;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--purple);
+  transition: 0.3s background-color;
+  cursor: pointer;
+  z-index: 10;
+}
+
+@media (max-width: 600px) {
+  .calc-user-age > button {
+    margin: 4rem auto 3rem;
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+.calc-user-age > button:hover {
+  background-color: black;
+}
+
+.calc-user-age > button:active {
+  transform: scale(0.98);
+}
+
+.calc-user-age > button img {
+  width: 2.5rem;
+  transition: 0.3s transform;
+}
+
+.calc-user-age > button:hover img {
+  transform: scale(1.2);
+}
+
+.user-age > div {
+  gap: 0.7rem;
+  font-size: 7rem;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  .user-age > div {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 470px) {
+  .user-age > div {
+    font-size: 5rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .user-age > div {
+    font-size: 4.5rem;
+  }
+}
+
+.user-age > div span {
+  color: var(--purple);
+  font-weight: 900;
+}
+
+.user-age > div p {
+  font-weight: 800;
+}
