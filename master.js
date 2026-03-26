@@ -25,11 +25,15 @@ const monthsWithTheirDays = {
 };
 
 function inValidInput(input, errMsg) {
-  const errorEle = input.nextElementSibling;
   input.previousElementSibling.classList.add("color-red");
   input.classList.add("border-red");
-  errorEle.classList.remove("hidden");
-  errMsg ? (errorEle.textContent = errMsg) : "";
+  function handleErrorEle() {
+    const errorEle = input.nextElementSibling;
+    errorEle.classList.remove("hidden");
+    errMsg ? (errorEle.textContent = errMsg) : "";
+  }
+  handleErrorEle();
+  return false;
 }
 
 function validInput(input) {
@@ -38,12 +42,12 @@ function validInput(input) {
   input.nextElementSibling.classList.add("hidden");
 }
 
-function inValidVal(input, inputName) {
-  input.value ? inValidInput(input, `Must be a valid ${inputName}`) : "";
-}
-
 function unSetUserAge() {
   for (let age of userAge) age.textContent = "--";
+}
+
+function isEmptyInput(input) {
+  return input.value === "" ? true : false;
 }
 
 function checkInputsValidation() {
@@ -53,25 +57,33 @@ function checkInputsValidation() {
   const monthDays = monthsWithTheirDays[+monthInput.value];
 
   function isValidDay() {
+    if (isEmptyInput(dayInput)) return;
     +dayInput.value > 0 && +dayInput.value <= 31
       ? (validDay = true)
-      : inValidVal(dayInput, "day");
+      : inValidInput(dayInput, "Must be a valid day");
+  }
+
+  function checkInvalidDayOfMonth() {
+    if (+dayInput.value <= 0 || +dayInput.value > monthDays) {
+      validDay = false;
+      inValidInput(dayInput, "Must be a valid day");
+    }
   }
 
   function isValidMonth() {
+    if (isEmptyInput(monthInput)) return;
     if (monthDays) {
       validMonth = true;
-      if (+dayInput.value <= 0 || +dayInput.value > monthDays) {
-        validDay = false;
-        inValidInput(dayInput, "Must be a valid day");
-      }
-    } else inValidVal(monthInput, "month");
+      checkInvalidDayOfMonth();
+    } else inValidInput(monthInput, "Must be a valid month");
   }
 
   function isValidYear() {
+    if (isEmptyInput(yearInput)) return;
     +yearInput.value >= 1700 && +yearInput.value <= now.getFullYear()
       ? (validYear = true)
-      : inValidVal(yearInput, "year");
+      : inValidInput(yearInput, "Must be a valid year");
+    +yearInput.value > now.getFullYear() ? inValidInput(yearInput, "Must be in the past") : "";
   }
 
   isValidDay();
@@ -83,12 +95,9 @@ function checkInputsValidation() {
 
 function handleSimilarDate(calcDays, calcMonths, calcYears) {
   if (calcYears === 0) {
-    if (calcMonths < 0) {
-      inValidInput(monthInput, "Must be in the past");
-      return false;
-    } else if (calcMonths === 0 && calcDays <= 0) {
-      inValidInput(dayInput, "Must be in the past");
-      return false;
+    if (calcMonths < 0) return inValidInput(monthInput, "Must be in the past");
+    else if (calcMonths === 0 && calcDays <= 0) {
+      return inValidInput(dayInput, "Must be in the past");
     }
   }
 }
@@ -103,10 +112,7 @@ function getAndCalcUserBirthdate() {
   let calcMonths = currentDate.getMonth() - userBirthdate.getMonth();
   let calcYears = currentDate.getFullYear() - userBirthdate.getFullYear();
 
-  if (handleSimilarDate(calcDays, calcMonths, calcYears) === false) {
-    unSetUserAge();
-    return;
-  }
+  if (handleSimilarDate(calcDays, calcMonths, calcYears) === false) return unSetUserAge();
 
   function calcUserAge() {
     const getUserMonthAndDay = new Date(
@@ -144,9 +150,6 @@ const calcBtn = document.querySelector(".calc-user-age > button");
 
 calcBtn.addEventListener("pointerup", () => {
   for (let input of allInputs) !input.value ? inValidInput(input) : validInput(input);
-  if (!checkInputsValidation()) {
-    unSetUserAge();
-    return;
-  }
+  if (!checkInputsValidation()) return unSetUserAge();
   getAndCalcUserBirthdate();
 });

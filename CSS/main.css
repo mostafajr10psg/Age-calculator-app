@@ -73,7 +73,6 @@ main {
   flex: 1;
   max-width: 63rem;
   padding: 5rem 4rem;
-  margin: 0 2rem;
   background-color: white;
   border-radius: 15px;
   border-bottom-right-radius: 150px;
@@ -173,6 +172,12 @@ main {
   font-style: italic;
 }
 
+@media (max-width: 460px) {
+  .user-birthdate > div .error-msg {
+    font-size: 0.9rem;
+  }
+}
+
 .calc-user-age > button {
   width: 6.5rem;
   height: 6.5rem;
@@ -193,21 +198,24 @@ main {
   }
 }
 
-.calc-user-age > button:hover {
-  background-color: black;
+@media (min-width: 1050px) {
+  .calc-user-age > button:hover {
+    background-color: black;
+  }
+
+  .calc-user-age > button:hover img {
+    transform: scale(1.2);
+  }
 }
 
 .calc-user-age > button:active {
   transform: scale(0.98);
+  background-color: black;
 }
 
 .calc-user-age > button img {
   width: 2.5rem;
   transition: 0.3s transform;
-}
-
-.calc-user-age > button:hover img {
-  transform: scale(1.2);
 }
 
 .user-age > div {
