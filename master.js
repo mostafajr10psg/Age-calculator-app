@@ -1,28 +1,14 @@
-const dayInput = document.querySelector(".calc-user-age .day input");
-const monthInput = document.querySelector(".calc-user-age .month input");
-const yearInput = document.querySelector(".calc-user-age .year input");
-const allInputs = document.querySelectorAll(".calc-user-age input");
+const form = document.forms[0];
+const dayInput = form.querySelector(".day input");
+const monthInput = form.querySelector(".month input");
+const yearInput = form.querySelector(".year input");
+const allInputs = form.querySelectorAll("input");
 
-const userAgeInYears = document.querySelector(".user-age .years span");
-const userAgeInMonths = document.querySelector(".user-age .months span");
-const userAgeInDays = document.querySelector(".user-age .days span");
+const userAge = document.querySelectorAll(".user-age > p output");
 
-const userAge = document.querySelectorAll(".user-age div span");
-
-const monthsWithTheirDays = {
-  1: 31,
-  2: 28,
-  3: 31,
-  4: 30,
-  5: 31,
-  6: 30,
-  7: 31,
-  8: 31,
-  9: 30,
-  10: 31,
-  11: 30,
-  12: 31,
-};
+function getDaysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
 
 function inValidInput(input, errMsg) {
   input.previousElementSibling.classList.add("color-red");
@@ -42,8 +28,20 @@ function validInput(input) {
   input.nextElementSibling.classList.add("hidden");
 }
 
+function removeAriaInvalidAttr() {
+  for (const input of allInputs) input.removeAttribute("aria-invalid");
+}
+
+function addAriaInvalidAttr() {
+  for (const input of allInputs) input.setAttribute("aria-invalid", "true");
+}
+
+function handleEmptyInput() {
+  for (const input of allInputs) !input.value ? inValidInput(input) : validInput(input);
+}
+
 function unSetUserAge() {
-  for (let age of userAge) age.textContent = "--";
+  for (const age of userAge) age.value = "--";
 }
 
 function isEmptyInput(input) {
@@ -52,30 +50,14 @@ function isEmptyInput(input) {
 
 function checkInputsValidation() {
   let validDay = false;
-  let validMonth = false;
   let validYear = false;
-  const monthDays = monthsWithTheirDays[+monthInput.value];
+  const monthDays = getDaysInMonth(yearInput.value, monthInput.value);
 
   function isValidDay() {
     if (isEmptyInput(dayInput)) return;
-    +dayInput.value > 0 && +dayInput.value <= 31
+    +dayInput.value <= monthDays
       ? (validDay = true)
       : inValidInput(dayInput, "Must be a valid day");
-  }
-
-  function checkInvalidDayOfMonth() {
-    if (+dayInput.value <= 0 || +dayInput.value > monthDays) {
-      validDay = false;
-      inValidInput(dayInput, "Must be a valid day");
-    }
-  }
-
-  function isValidMonth() {
-    if (isEmptyInput(monthInput)) return;
-    if (monthDays) {
-      validMonth = true;
-      checkInvalidDayOfMonth();
-    } else inValidInput(monthInput, "Must be a valid month");
   }
 
   function isValidYear() {
@@ -87,10 +69,9 @@ function checkInputsValidation() {
   }
 
   isValidDay();
-  isValidMonth();
   isValidYear();
 
-  return !validDay || !validMonth || !validYear ? false : true;
+  return !validDay || !validYear ? false : true;
 }
 
 function handleSimilarDate(calcDays, calcMonths, calcYears) {
@@ -133,23 +114,29 @@ function getAndCalcUserBirthdate() {
 
     if (calcDays < 0) {
       calcMonths--;
-      calcDays = monthsWithTheirDays[+monthInput.value] - -calcDays;
+      calcDays = getDaysInMonth(yearInput.value, monthInput.value) - -calcDays;
     }
   }
 
   function setUserAge() {
     let calcs = [calcYears, calcMonths, calcDays];
-    for (let i = 0; i < calcs.length; i++) userAge[i].textContent = calcs[i];
+    for (let i = 0; i < calcs.length; i++) userAge[i].value = calcs[i];
   }
 
   calcUserAge();
   setUserAge();
 }
 
-const calcBtn = document.querySelector(".calc-user-age > button");
-
-calcBtn.addEventListener("pointerup", () => {
-  for (let input of allInputs) !input.value ? inValidInput(input) : validInput(input);
-  if (!checkInputsValidation()) return unSetUserAge();
-  getAndCalcUserBirthdate();
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  handleEmptyInput();
+  if (!checkInputsValidation()) {
+    addAriaInvalidAttr();
+    unSetUserAge();
+  } else getAndCalcUserBirthdate();
 });
+
+//when input's valid
+// dayInput.removeAttribute("aria-invalid");
+// monthInput.removeAttribute("aria-invalid");
+// yearInput.removeAttribute("aria-invalid");

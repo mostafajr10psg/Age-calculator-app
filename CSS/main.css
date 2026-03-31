@@ -34,6 +34,12 @@ input[type="number"] {
   -webkit-tap-highlight-color: transparent;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
 .hidden {
   display: none !important;
 }
@@ -73,6 +79,7 @@ main {
   flex: 1;
   max-width: 63rem;
   padding: 5rem 4rem;
+  margin: 0 1.8rem;
   background-color: white;
   border-radius: 15px;
   border-bottom-right-radius: 150px;
@@ -85,28 +92,36 @@ main {
   }
 }
 
-.calc-user-age::after {
+h1.visually-hidden {
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+form::after {
   content: "";
   position: absolute;
   left: 0;
   bottom: 30px;
   width: 100%;
-  height: 1px;
-  background-color: var(--grey-100);
+  height: 0.1rem;
+  background-color: var(--grey-200);
 }
 
-.calc-user-age .user-birthdate {
-  display: flex;
+form .user-birthdate {
   gap: 2.5rem;
 }
 
 @media (max-width: 400px) {
-  .calc-user-age .user-birthdate {
+  form .user-birthdate {
     gap: 1.5rem;
   }
 }
 
 .user-birthdate > div {
+  flex: 1;
   max-width: 12.5rem;
 }
 
@@ -130,19 +145,19 @@ main {
 .user-birthdate > div input {
   width: 100%;
   height: 5.3rem;
-  padding: 1.8rem 1.4rem;
+  padding-inline-start: 1.7rem;
   border: 1px solid var(--grey-200);
   border-radius: 6px;
   outline: none;
   font-family: var(--font-poppins);
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   transition: 0.3s border;
 }
 
 @media (max-width: 400px) {
   .user-birthdate > div input {
-    padding: 1.5rem 1.1rem;
+    padding-inline-start: 1.5rem;
     font-size: 1.9rem;
   }
 }
@@ -154,7 +169,7 @@ main {
   font-weight: 700;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   .user-birthdate > div input::placeholder {
     font-size: 1.8rem;
   }
@@ -166,7 +181,7 @@ main {
 }
 
 .user-birthdate > div .error-msg {
-  margin-top: 7px;
+  margin-top: 0.7rem;
   color: var(--red);
   font-size: 1.1rem;
   font-style: italic;
@@ -178,7 +193,7 @@ main {
   }
 }
 
-.calc-user-age > button {
+form > button {
   width: 6.5rem;
   height: 6.5rem;
   margin: 1rem 0 0 auto;
@@ -191,7 +206,7 @@ main {
 }
 
 @media (max-width: 600px) {
-  .calc-user-age > button {
+  form > button {
     margin: 4rem auto 3rem;
     width: 6rem;
     height: 6rem;
@@ -199,55 +214,52 @@ main {
 }
 
 @media (min-width: 1050px) {
-  .calc-user-age > button:hover {
+  form > button:hover {
     background-color: black;
   }
 
-  .calc-user-age > button:hover img {
+  form > button:hover img {
     transform: scale(1.2);
   }
 }
 
-.calc-user-age > button:active {
+form > button:active {
   transform: scale(0.98);
   background-color: black;
 }
 
-.calc-user-age > button img {
+form > button img {
   width: 2.5rem;
   transition: 0.3s transform;
 }
 
-.user-age > div {
+.user-age > p {
   gap: 0.7rem;
   font-size: 7rem;
+  font-weight: 800;
   font-style: italic;
   line-height: 1.2;
 }
 
 @media (max-width: 600px) {
-  .user-age > div {
+  .user-age > p {
     font-size: 6rem;
   }
 }
 
 @media (max-width: 470px) {
-  .user-age > div {
+  .user-age > p {
     font-size: 5rem;
   }
 }
 
 @media (max-width: 390px) {
-  .user-age > div {
+  .user-age > p {
     font-size: 4.5rem;
   }
 }
 
-.user-age > div span {
+.user-age > p output {
   color: var(--purple);
   font-weight: 900;
-}
-
-.user-age > div p {
-  font-weight: 800;
 }

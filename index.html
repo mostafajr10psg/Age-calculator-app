@@ -14,42 +14,72 @@
   </head>
   <body class="d-flex jc-center ai-center">
     <main>
-      <section class="calc-user-age p-relative">
-        <div class="user-birthdate">
+      <h1 class="visually-hidden">Age Calculator</h1>
+      <form class="calc-user-age p-relative">
+        <div class="user-birthdate d-flex">
           <div class="day">
             <label class="day" for="day">Day</label>
-            <input id="day" type="number" placeholder="dd" />
-            <p class="error-msg hidden">This field is required</p>
+            <input
+              id="day"
+              type="number"
+              name="day"
+              aria-describedby="day-error"
+              aria-invalid="true"
+              placeholder="dd"
+              min="1"
+              max="31"
+            />
+            <p id="day-error" class="error-msg hidden">This field is required</p>
           </div>
           <div class="month">
             <label class="month" for="month">Month</label>
-            <input id="month" type="number" placeholder="mm" />
-            <p class="error-msg hidden">This field is required</p>
+            <input
+              id="month"
+              type="number"
+              name="month"
+              aria-describedby="month-error"
+              aria-invalid="true"
+              placeholder="mm"
+              min="1"
+              max="12"
+            />
+            <p id="month-error" class="error-msg hidden">This field is required</p>
           </div>
           <div class="year">
             <label class="year" for="year">Year</label>
-            <input id="year" type="number" placeholder="yyyy" />
-            <p class="error-msg hidden">This field is required</p>
+            <input
+              id="year"
+              type="number"
+              name="year"
+              aria-describedby="year-error"
+              aria-invalid="true"
+              placeholder="yyyy"
+            />
+            <p id="year-error" class="error-msg hidden">This field is required</p>
           </div>
         </div>
-        <button class="d-flex jc-center ai-center p-relative" type="button">
+        <button
+          class="d-flex jc-center ai-center p-relative"
+          type="submit"
+          aria-label="Calculate age"
+        >
           <img src="assets/images/icon-arrow.svg" alt="" />
         </button>
-      </section>
+      </form>
 
       <section class="user-age">
-        <div class="years d-flex ai-center">
-          <span>- -</span>
-          <p>years</p>
-        </div>
-        <div class="months d-flex ai-center">
-          <span>- -</span>
-          <p>months</p>
-        </div>
-        <div class="days d-flex ai-center">
-          <span>- -</span>
-          <p>days</p>
-        </div>
+        <p class="years d-flex ai-center">
+          <output id="year" name="year">--</output>
+          years
+        </p>
+        <p class="months d-flex ai-center">
+          <output id="month" name="month">--</output>
+          months
+        </p>
+        <p class="days d-flex ai-center">
+          <output id="day" name="day">--</output>
+          days
+        </p>
       </section>
     </main>
     <script src="master.js"></script>
