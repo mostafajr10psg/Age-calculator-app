@@ -35,7 +35,7 @@ input[type="number"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  .motion {
     transition: none !important;
   }
 }
@@ -45,7 +45,7 @@ input[type="number"] {
 }
 
 .d-flex {
-  display: flex !important;
+  display: flex;
 }
 
 .jc-center {
@@ -57,14 +57,14 @@ input[type="number"] {
 }
 
 .p-relative {
-  position: relative !important;
+  position: relative;
 }
 
-.color-red {
+fieldset div.invalid label {
   color: var(--red) !important;
 }
 
-.border-red {
+fieldset div.invalid input {
   border-color: var(--red) !important;
 }
 
@@ -78,21 +78,21 @@ body {
 main {
   flex: 1;
   max-width: 63rem;
-  padding: 5rem 4rem;
   margin: 0 1.8rem;
   background-color: white;
   border-radius: 15px;
-  border-bottom-right-radius: 150px;
+  padding: 5rem 2.5rem;
+  border-bottom-right-radius: 100px;
 }
 
-@media (max-width: 400px) {
+@media (min-width: 500px) {
   main {
-    padding: 5rem 2.5rem;
-    border-bottom-right-radius: 100px;
+    padding: 5rem 4rem;
+    border-bottom-right-radius: 150px;
   }
 }
 
-h1.visually-hidden {
+.visually-hidden {
   position: absolute;
   width: 0.1rem;
   height: 0.1rem;
@@ -111,18 +111,19 @@ form::after {
 }
 
 form .user-birthdate {
-  gap: 2.5rem;
+  gap: 1.5rem;
+  border: none;
 }
 
-@media (max-width: 400px) {
+@media (min-width: 500px) {
   form .user-birthdate {
-    gap: 1.5rem;
+    gap: 2.5rem;
   }
 }
 
 .user-birthdate > div {
   flex: 1;
-  max-width: 12.5rem;
+  max-width: 12.7rem;
 }
 
 .user-birthdate > div label {
@@ -130,15 +131,15 @@ form .user-birthdate {
   margin-bottom: 0.6rem;
   color: var(--grey-500);
   text-transform: uppercase;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 2px;
   transition: 0.3s color;
 }
 
-@media (max-width: 450px) {
+@media (min-width: 500px) {
   .user-birthdate > div label {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 }
 
@@ -163,15 +164,15 @@ form .user-birthdate {
 }
 
 .user-birthdate > div input::placeholder {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   color: var(--grey-500);
   text-transform: uppercase;
   font-weight: 700;
 }
 
-@media (max-width: 450px) {
+@media (min-width: 500px) {
   .user-birthdate > div input::placeholder {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
 }
 
@@ -183,20 +184,20 @@ form .user-birthdate {
 .user-birthdate > div .error-msg {
   margin-top: 0.7rem;
   color: var(--red);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-style: italic;
 }
 
-@media (max-width: 460px) {
+@media (min-width: 500px) {
   .user-birthdate > div .error-msg {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
 }
 
 form > button {
-  width: 6.5rem;
-  height: 6.5rem;
-  margin: 1rem 0 0 auto;
+  width: 6rem;
+  height: 6rem;
+  margin: 4rem auto 3rem;
   border: none;
   border-radius: 50%;
   background-color: var(--purple);
@@ -205,11 +206,11 @@ form > button {
   z-index: 10;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 600px) {
   form > button {
-    margin: 4rem auto 3rem;
-    width: 6rem;
-    height: 6rem;
+    width: 6.5rem;
+    height: 6.5rem;
+    margin: 1rem 0 0 auto;
   }
 }
 
@@ -233,33 +234,27 @@ form > button img {
   transition: 0.3s transform;
 }
 
-.user-age > p {
+.age-result p {
   gap: 0.7rem;
-  font-size: 7rem;
+  font-size: 4.5rem;
   font-weight: 800;
   font-style: italic;
   line-height: 1.2;
 }
 
-@media (max-width: 600px) {
-  .user-age > p {
+@media (min-width: 500px) {
+  .age-result p {
     font-size: 6rem;
   }
 }
 
-@media (max-width: 470px) {
-  .user-age > p {
-    font-size: 5rem;
+@media (min-width: 650px) {
+  .age-result p {
+    font-size: 7rem;
   }
 }
 
-@media (max-width: 390px) {
-  .user-age > p {
-    font-size: 4.5rem;
-  }
-}
-
-.user-age > p output {
+.age-result p span {
   color: var(--purple);
   font-weight: 900;
 }

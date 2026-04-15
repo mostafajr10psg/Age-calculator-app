@@ -15,71 +15,84 @@
   <body class="d-flex jc-center ai-center">
     <main>
       <h1 class="visually-hidden">Age Calculator</h1>
-      <form class="calc-user-age p-relative">
-        <div class="user-birthdate d-flex">
-          <div class="day">
-            <label class="day" for="day">Day</label>
-            <input
-              id="day"
-              type="number"
-              name="day"
-              aria-describedby="day-error"
-              aria-invalid="true"
-              placeholder="dd"
-              min="1"
-              max="31"
-            />
-            <p id="day-error" class="error-msg hidden">This field is required</p>
-          </div>
-          <div class="month">
-            <label class="month" for="month">Month</label>
-            <input
-              id="month"
-              type="number"
-              name="month"
-              aria-describedby="month-error"
-              aria-invalid="true"
-              placeholder="mm"
-              min="1"
-              max="12"
-            />
-            <p id="month-error" class="error-msg hidden">This field is required</p>
-          </div>
-          <div class="year">
-            <label class="year" for="year">Year</label>
-            <input
-              id="year"
-              type="number"
-              name="year"
-              aria-describedby="year-error"
-              aria-invalid="true"
-              placeholder="yyyy"
-            />
-            <p id="year-error" class="error-msg hidden">This field is required</p>
-          </div>
-        </div>
-        <button
-          class="d-flex jc-center ai-center p-relative"
-          type="submit"
-          aria-label="Calculate age"
-        >
-          <img src="assets/images/icon-arrow.svg" alt="" />
-        </button>
-      </form>
+      <section class="calc-user-age p-relative">
+        <form>
+          <fieldset class="user-birthdate d-flex">
+            <legend class="visually-hidden">User Birthdate</legend>
+            <div class="day">
+              <label class="day motion" for="day">Day</label>
+              <input
+                class="motion"
+                id="day"
+                type="number"
+                name="day"
+                data-invalid-range="must be a valid day"
+                required
+                aria-describedby="day-error"
+                placeholder="dd"
+                min="1"
+                max="31"
+              />
+              <p id="day-error" class="error-msg hidden">This field is required</p>
+            </div>
+            <div class="month">
+              <label class="month motion" for="month">Month</label>
+              <input
+                class="motion"
+                id="month"
+                type="number"
+                name="month"
+                data-invalid-range="must be a valid month"
+                required
+                aria-describedby="month-error"
+                placeholder="mm"
+                min="1"
+                max="12"
+              />
+              <p id="month-error" class="error-msg hidden">This field is required</p>
+            </div>
+            <div class="year">
+              <label class="year motion" for="year">Year</label>
+              <input
+                class="motion"
+                id="year"
+                type="number"
+                name="year"
+                data-invalid-range="must be a valid year"
+                required
+                aria-describedby="year-error"
+                placeholder="yyyy"
+                min="1700"
+              />
+              <p id="year-error" class="error-msg hidden">This field is required</p>
+            </div>
+          </fieldset>
+          <button
+            class="d-flex jc-center ai-center p-relative motion"
+            type="submit"
+            aria-label="Calculate age"
+          >
+            <img class="motion" src="assets/images/icon-arrow.svg" alt="" />
+          </button>
+        </form>
+      </section>
 
-      <section class="user-age">
-        <p class="years d-flex ai-center">
-          <output id="year" name="year">--</output>
-          years
-        </p>
-        <p class="months d-flex ai-center">
-          <output id="month" name="month">--</output>
-          months
-        </p>
-        <p class="days d-flex ai-center">
-          <output id="day" name="day">--</output>
-          days
-        </p>
+      <section class="age-result">
+        <h2 class="visually-hidden">Age Result</h2>
+        <output for="day month year" aria-live="polite">
+          <p class="years d-flex ai-center">
+            <span class="year-result">--</span>
+            years
+          </p>
+          <p class="months d-flex ai-center">
+            <span class="month-result">--</span>
+            months
+          </p>
+          <p class="days d-flex ai-center">
+            <span class="day-result">--</span>
+            days
+          </p>
+        </output>
       </section>
     </main>
     <script src="master.js"></script>

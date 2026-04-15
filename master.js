@@ -2,98 +2,122 @@ const form = document.forms[0];
 const dayInput = form.querySelector(".day input");
 const monthInput = form.querySelector(".month input");
 const yearInput = form.querySelector(".year input");
-const allInputs = form.querySelectorAll("input");
+const ageInputs = form.querySelectorAll("input");
+let formSubmitted = false;
 
-const userAge = document.querySelectorAll(".user-age > p output");
+yearInput.max = new Date().getFullYear();
+
+const userAge = document.querySelectorAll(".age-result output p span");
 
 function getDaysInMonth(year, month) {
   return new Date(year, month, 0).getDate();
 }
 
-function inValidInput(input, errMsg) {
-  input.previousElementSibling.classList.add("color-red");
-  input.classList.add("border-red");
-  function handleErrorEle() {
-    const errorEle = input.nextElementSibling;
-    errorEle.classList.remove("hidden");
-    errMsg ? (errorEle.textContent = errMsg) : "";
-  }
-  handleErrorEle();
-  return false;
+function handleInValidInput(input, errMsg) {
+  input.parentElement.classList.add("invalid");
+  const errEle = input.nextElementSibling;
+  errEle.classList.remove("hidden");
+  if (errMsg) errEle.textContent = errMsg;
+  input.setAttribute("aria-invalid", "true");
 }
 
-function validInput(input) {
-  input.previousElementSibling.classList.remove("color-red");
-  input.classList.remove("border-red");
+function handleValidInput(input) {
+  input.parentElement.classList.remove("invalid");
   input.nextElementSibling.classList.add("hidden");
+  input.removeAttribute("aria-invalid");
 }
 
-function removeAriaInvalidAttr() {
-  for (const input of allInputs) input.removeAttribute("aria-invalid");
+function handleInvalidRangeInput(input) {
+  handleInValidInput(input, input.dataset.invalidRange);
 }
 
-function addAriaInvalidAttr() {
-  for (const input of allInputs) input.setAttribute("aria-invalid", "true");
-}
-
-function handleEmptyInput() {
-  for (const input of allInputs) !input.value ? inValidInput(input) : validInput(input);
+function handleEmptyInput(input) {
+  handleInValidInput(input, "this filed is required");
 }
 
 function unSetUserAge() {
-  for (const age of userAge) age.value = "--";
+  for (const age of userAge) age.textContent = "--";
 }
 
-function isEmptyInput(input) {
-  return input.value === "" ? true : false;
-}
-
-function checkInputsValidation() {
-  let validDay = false;
-  let validYear = false;
+function isValidDay() {
   const monthDays = getDaysInMonth(yearInput.value, monthInput.value);
-
-  function isValidDay() {
-    if (isEmptyInput(dayInput)) return;
-    +dayInput.value <= monthDays
-      ? (validDay = true)
-      : inValidInput(dayInput, "Must be a valid day");
+  if (dayInput.value > 0 && dayInput.value <= monthDays) {
+    handleValidInput(dayInput);
+    return true;
+  } else {
+    handleInvalidRangeInput(dayInput);
+    return false;
   }
-
-  function isValidYear() {
-    if (isEmptyInput(yearInput)) return;
-    +yearInput.value >= 1700 && +yearInput.value <= now.getFullYear()
-      ? (validYear = true)
-      : inValidInput(yearInput, "Must be a valid year");
-    +yearInput.value > now.getFullYear() ? inValidInput(yearInput, "Must be in the past") : "";
-  }
-
-  isValidDay();
-  isValidYear();
-
-  return !validDay || !validYear ? false : true;
 }
 
-function handleSimilarDate(calcDays, calcMonths, calcYears) {
-  if (calcYears === 0) {
-    if (calcMonths < 0) return inValidInput(monthInput, "Must be in the past");
-    else if (calcMonths === 0 && calcDays <= 0) {
-      return inValidInput(dayInput, "Must be in the past");
+function handleBlurEvent() {
+  ageInputs.forEach((input) => {
+    input.addEventListener("blur", (e) => {
+      e.target.value === "" ? handleEmptyInput(input) : "";
+    });
+  });
+}
+
+function chckInputValidity(input) {
+  if (input.value !== "" && !input.validity.valid) handleInvalidRangeInput(input);
+  else handleValidInput(input);
+}
+
+function handleInValidEvent(input) {
+  input.addEventListener("invalid", (e) => {
+    unSetUserAge();
+    e.preventDefault();
+    chckInputValidity(input);
+    if (input.value === "") handleEmptyInput(input);
+    formSubmitted = true;
+    handleBlurEvent();
+  });
+}
+
+function handleChangeEvent(input) {
+  input.addEventListener("input", () => {
+    if (formSubmitted) {
+      isValidDay();
+      chckInputValidity(input);
+      if (input === yearInput && formSubmitted) {
+        if (input.validity.rangeUnderflow) {
+          handleInValidInput(input, `value must be >= 1700`);
+        }
+        if (input.validity.rangeOverflow) {
+          handleInValidInput(input, `value must be <= ${new Date().getFullYear()}`);
+        }
+      }
     }
-  }
+  });
 }
 
-const now = new Date();
+ageInputs.forEach((input) => {
+  handleInValidEvent(input);
+  handleChangeEvent(input);
+});
 
 function getAndCalcUserBirthdate() {
+  const dateNow = new Date();
   const userBirthdate = new Date(+yearInput.value, +monthInput.value - 1, +dayInput.value);
-  const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const currentDate = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate());
 
   let calcDays = currentDate.getDate() - userBirthdate.getDate();
   let calcMonths = currentDate.getMonth() - userBirthdate.getMonth();
   let calcYears = currentDate.getFullYear() - userBirthdate.getFullYear();
 
-  if (handleSimilarDate(calcDays, calcMonths, calcYears) === false) return unSetUserAge();
+  function handleSimilarDate() {
+    if (calcYears === 0) {
+      if (calcMonths < 0) {
+        unSetUserAge();
+        return handleInValidInput(monthInput, "Must be in the past");
+      } else if (calcMonths === 0 && calcDays <= 0) {
+        unSetUserAge();
+        return handleInValidInput(dayInput, "Must be in the past");
+      }
+    }
+  }
+
+  handleSimilarDate();
 
   function calcUserAge() {
     const getUserMonthAndDay = new Date(
@@ -106,21 +130,19 @@ function getAndCalcUserBirthdate() {
 
     if (!hasHadBirthday) calcYears--;
 
-    if (calcMonths < 0) calcMonths = 12 - -calcMonths;
-
-    if (calcMonths === 0) {
-      calcDays >= 0 ? (calcMonths = 0) : (calcMonths = 12 - -calcMonths);
+    if (calcMonths < 0) {
+      calcMonths = 12 - Math.abs(calcMonths);
     }
 
     if (calcDays < 0) {
-      calcMonths--;
-      calcDays = getDaysInMonth(yearInput.value, monthInput.value) - -calcDays;
+      calcMonths === 0 ? (calcMonths = 11) : calcMonths--;
+      calcDays = getDaysInMonth(yearInput.value, monthInput.value) - Math.abs(calcDays);
     }
   }
 
   function setUserAge() {
-    let calcs = [calcYears, calcMonths, calcDays];
-    for (let i = 0; i < calcs.length; i++) userAge[i].value = calcs[i];
+    const calcs = [calcYears, calcMonths, calcDays];
+    for (let i = 0; i < calcs.length; i++) userAge[i].textContent = calcs[i];
   }
 
   calcUserAge();
@@ -128,15 +150,10 @@ function getAndCalcUserBirthdate() {
 }
 
 form.addEventListener("submit", (e) => {
+  console.log("data submited");
   e.preventDefault();
-  handleEmptyInput();
-  if (!checkInputsValidation()) {
-    addAriaInvalidAttr();
-    unSetUserAge();
-  } else getAndCalcUserBirthdate();
+  handleBlurEvent();
+  formSubmitted = true;
+  if (!isValidDay()) return;
+  getAndCalcUserBirthdate();
 });
-
-//when input's valid
-// dayInput.removeAttribute("aria-invalid");
-// monthInput.removeAttribute("aria-invalid");
-// yearInput.removeAttribute("aria-invalid");
